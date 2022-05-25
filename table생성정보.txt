@@ -1,0 +1,38 @@
+0. 연습용 local postresql 계정
+   myuser / mypass
+   database: fc21
+
+
+1. users 테이블 
+
+create table if not exists users(
+	id serial primary key,
+	firstname varchar(50) not null,
+	surname varchar(50) not null,
+	email varchar(100) not null,
+	password varchar(200) not null,
+	created_at timestamp with time zone default now(),
+	constraint uk_users_email unique (email)
+);
+
+
+2. postgresql를 세션저장소로 쓰기 위한 session테이블
+
+create table users (id serial primary key, name varchar not null);
+
+insert into users (name) values ('Eoeo');
+
+
+select * 
+from users;
+
+CREATE TABLE "session" (
+  "sid" varchar NOT NULL COLLATE "default",
+  "sess" json NOT NULL,
+  "expire" timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE);
+
+ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+CREATE INDEX "IDX_session_expire" ON "session" ("expire");
