@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcryptjs");
+const pg = require("../model/pg");
 
 /* POST user login */
 router.post("/", async (req, res) => {
@@ -11,7 +12,7 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const data = await pgPool.query(
+    const data = await pg.query(
       "SELECT id, firstname, surname, email, password FROM users WHERE email = $1",
       [email]
     );
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
       email: user.email,
     };
 
-    req.statusCode(200);
+    res.status(200);
     return res.json({ user: req.session.user });
   } catch (e) {
     console.error(e);

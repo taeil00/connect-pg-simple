@@ -17,16 +17,6 @@ var app = express();
 const session = require("express-session");
 const pg = require("./model/pg");
 const pgSession = require("connect-pg-simple")(session);
-// const pg = require("pg");
-
-// const pgPool = new pg.Pool({
-//   //pool options
-//   user: "myuser",
-//   password: "mypass",
-//   host: "localhost",
-//   port: 5432,
-//   database: "fc21",
-// });
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -38,14 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/register", registerRouter);
-app.use("/login", loginRouter);
-app.use("/logout", logoutRouter);
-app.use("/fetchuser", fetchuserRouter);
-
-//session
+// session
+// 라우터 설정보다 앞에 있어야 함
 app.use(
   session({
     store: new pgSession({
@@ -59,6 +43,14 @@ app.use(
     saveUninitialized: true, //세션이 저장되기 전 uninitialized상태로 미리 만들어저장할지 여부
   })
 );
+
+// 라우터 설정
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/register", registerRouter);
+app.use("/login", loginRouter);
+app.use("/logout", logoutRouter);
+app.use("/fetchuser", fetchuserRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
