@@ -1,4 +1,4 @@
-0. 연습용 local postresql 계정
+0. 연습용 local postresql 계정 !
    myuser / mypass
    database: fc21
 
